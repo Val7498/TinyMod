@@ -6,7 +6,8 @@ using System.Reflection;
 using System.IO;
 using System.Reflection.Emit;
 using TinyMod.Attributes;
-
+using Falcon.UniversalAircraft;
+using Falcon.Game2;
 namespace TinyMod
 {
 
@@ -19,7 +20,7 @@ namespace TinyMod
     public class ModLoader : MonoBehaviour
     {
         Dictionary<string, Assembly> assemblies = new Dictionary<string, Assembly>();
-        public Action<List<Mod>> OnLoadFinish = new Action<List<Mod>>((List<Mod> t) => { });
+        public Action<List<Mod>> OnLoadFinish;
         public Action<string> Log, LogError, LogInfo, logDebug;
         List<Mod> loadedMods = new List<Mod>();
         string ModFolder = "";
@@ -65,6 +66,7 @@ namespace TinyMod
             }
             loadAssemblies();
         }
+
         void loadAssemblies()
         {
             logDebug("Begin loading mods");
@@ -155,6 +157,22 @@ namespace TinyMod
                 return false;
             }
             return true;
+        }
+
+        public struct Mod
+        {
+            public string Name;
+            public int Major;
+            public int Minor;
+            public int Revision;
+
+            public Mod(string name, int major, int minor, int rev)
+            {
+                Name = name;
+                Major = major;
+                Minor = minor;
+                Revision = rev;
+            }
         }
     }
 }
